@@ -45,7 +45,7 @@ export class TodoComponent {
   }
 
   get progress(): number {
-    return this.todoData.progress;
+    return this.todoData.progress * 100;
   }
 
   get range():string {
