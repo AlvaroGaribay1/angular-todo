@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, LOCALE_ID, Output, ɵɵrepeaterTrackByIndex } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, ContentChildren, DoCheck, ElementRef, EventEmitter, Input, LOCALE_ID, OnChanges, OnDestroy, OnInit, Output, QueryList, SimpleChanges } from '@angular/core';
 import { NTodo } from '../../models/todo.model';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
+import { InputComponent } from '../../components/input/input.component';
+import { interval } from 'rxjs';
+import { TODO_DATA } from '../../../assets/todo';
 registerLocaleData(es);
 
 @Component({
@@ -18,18 +21,61 @@ registerLocaleData(es);
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss'
 })
-export class TodoComponent {
-  @Input({ required: true }) todoData!: NTodo.TodoData;
 
-  @Input() first!: boolean;
 
-  @Input() last!: boolean;
 
-  @Input() odd!: boolean;
 
-  @Input() even!: boolean;
 
+export class TodoComponent implements 
+    OnChanges, OnInit, DoCheck,
+    AfterContentInit, AfterContentChecked,
+    AfterViewInit, AfterViewChecked, OnDestroy {
+
+  constructor() {
+
+    console.log('constructor');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('ngOnChanges', changes);
+  }
+
+  ngOnInit(): void {
+    console.log('ngOnInit');
+  }
+
+  ngDoCheck(): void {
+    console.log('ngDoCheck');
+  }
+
+  ngAfterContentInit(): void {
+    console.log('ngAfterContentInit', this.projectedContent);  
+  }
+
+  ngAfterContentChecked(): void {
+    console.log('ngAfterContentChecked');
+  }
+
+  ngAfterViewInit(): void {
+    console.log('ngAfterViewInit'); 
+  }
+
+  ngAfterViewChecked(): void {
+    console.log('ngAfterChecked');
+  }
+
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy');
+    
+  }
+
+  @Input({ required: true }) todoData: NTodo.TodoData = TODO_DATA[0];
+  
   @Output() onClickIcon = new EventEmitter<NTodo.TodoData>();
+
+  @ContentChildren(InputComponent, {read: ElementRef}) projectedContent?: ElementRef<HTMLElement>;
+
+
 
   get priority(): string {
     switch (this.todoData.priority) {
@@ -58,7 +104,10 @@ export class TodoComponent {
     
   }
 
-
+  selectedContent() {
+   
+    console.log('elements');
+  }
 
 
 
