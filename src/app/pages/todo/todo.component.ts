@@ -21,14 +21,6 @@ registerLocaleData(es);
 export class TodoComponent {
   @Input({ required: true }) todoData!: NTodo.TodoData;
 
-  @Input() first!: boolean;
-
-  @Input() last!: boolean;
-
-  @Input() odd!: boolean;
-
-  @Input() even!: boolean;
-
   @Output() onClickIcon = new EventEmitter<NTodo.TodoData>();
 
   get priority(): string {
