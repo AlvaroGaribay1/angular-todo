@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { NTodo } from '../models/todo.model';
-import { TODO_DATA } from '../../assets/todo';
+import { Inject, Injectable } from '@angular/core';
+import { API_CONFIG_TOKEN, IApiConfig } from '../constants/apiConfig';
 
 @Injectable({
   providedIn: 'root'
@@ -9,21 +8,25 @@ import { TODO_DATA } from '../../assets/todo';
 export class ApiService {
 
   constructor(
-    private readonly http: HttpClient
-  ) { }
+    private readonly http: HttpClient,
+    @Inject(API_CONFIG_TOKEN) private readonly config: IApiConfig
+  ) { 
+    console.log(this.config);
+  }
 
   private readonly baseUrl = 'http://localhost:3000/todos';
 
+
   get<T>() {
     const headers = new HttpHeaders()
-    .set('my-token', 'tokenValue')
-    return this.http.get<T>(this.baseUrl, {headers});
+    .set('my-token', 'tokenValue');
+    return this.http.get<T>(this.baseUrl, { headers });
   }
 
   put<P, R>(payload: P, id: number) {
     const params = new HttpParams()
-    .set('date', '2024-02-04')
-    return this.http.put<R>(this.baseUrl + '/' + id, payload , {params});
+    .set('date', '2024-02-04');
+    return this.http.put<R>(this.baseUrl + '/' + id, payload, { params });
   }
 
   patch<P, R>(payload: P, id: number) {
@@ -35,8 +38,6 @@ export class ApiService {
   }
 
   delete<T>(id: number) {
-    return this.http.delete<T>(this.baseUrl + '/' + id)
+    return this.http.delete<T>(this.baseUrl + '/' + id);
   }
-
-
 }
