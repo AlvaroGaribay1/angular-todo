@@ -11,5 +11,5 @@ export interface IApiConfig {
 }
 
 export const API_CONFIG_TOKEN = new InjectionToken('API_CONFIG_TOKEN',{
-    factory: () => API_CONFIG,
+    factory: () => API_CONFIG
 });

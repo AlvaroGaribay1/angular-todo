@@ -11,10 +11,10 @@ export class ApiService {
     private readonly http: HttpClient,
     @Inject(API_CONFIG_TOKEN) private readonly config: IApiConfig
   ) { 
-    console.log(this.config);
+    this.baseUrl = `${this.config.baseUrl}/todos`;
   }
 
-  private readonly baseUrl = 'http://localhost:3000/todos';
+  private baseUrl = '';
 
 
   get<T>() {

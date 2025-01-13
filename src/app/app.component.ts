@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TodoComponent } from './pages/todo/todo.component';
 import { NTodo } from './models/todo.model';
@@ -7,6 +7,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { ApiService } from './services/api.service';
 import { FormsModule } from '@angular/forms';
 import { HighlightedDirective } from './directives/highlighted.directive';
+import { interval, Observable } from 'rxjs';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @Component({
   selector: 'app-root',
@@ -17,33 +19,66 @@ import { HighlightedDirective } from './directives/highlighted.directive';
     CommonModule,
     HeaderComponent,
     FormsModule,
-    HighlightedDirective
+    HighlightedDirective,
+    FilterPipe
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements OnInit {
-  todos: NTodo.TodosResponse = {totalRecords: 0, data: []};
+export class AppComponent implements OnInit, DoCheck {
+  todos: NTodo.TodoData[] = [];
+
+
+  counter = 0;
+
+  counter$: Observable<number>;
+
+  isLoaded = false;
+
+  searchText = '';
 
   constructor(
-    private readonly apiService: ApiService
-  ) {}
+    private readonly apiService: ApiService,
+    private readonly cd: ChangeDetectorRef
+
+  ) {
+    this.counter$ = interval(1000);
+  }
+  ngDoCheck(): void {
+    // if (this.isLoaded) {
+    //   console.log('Loaded');
+    //   this.cd.markForCheck();
+    //   this.isLoaded = false;
+    // }
+  }
 
   ngOnInit(): void {
     this.getTodos();
   }
 
   private getTodos() {
-    this.apiService.get<NTodo.TodosResponse>().subscribe(val => this.todos = val);
+    this.apiService.get<NTodo.TodosResponse>().subscribe(val => {
+      this.todos = val.data;
+      this.isLoaded = true;
+    });
   }
 
   deleteTodo(item: NTodo.TodoData) {
-    this.apiService.delete<NTodo.TodosResponse>(item.id).subscribe(todos => this.todos = todos);
+    this.apiService.delete<NTodo.TodosResponse>(item.id).subscribe(todos => this.todos = todos.data);
   }
 
-  updateTodo(item : NTodo.TodoData) {
-    // this.apiService.put(item, item.id).subscribe(console.log);
-    this.apiService.patch({ description: item.description}, item.id).subscribe(console.log);
+  updateTodo(evt: Event, item : NTodo.TodoData) {
+    const val = (evt.target as HTMLTextAreaElement).value;
+    // // this.apiService.patch({ description: item.description}, item.id).subscribe(console.log);
+  
+    const todoCopy = {...this.todos[0], description: 'Nuevo valor'};
+    const todos = [... this.todos];
+    todos[0] = todoCopy;
+
+    this.todos = [];
+    this.todos = todos;
+
   }
 
   addTodo() {
