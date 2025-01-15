@@ -1,0 +1,24 @@
+{
+    "AddTodo": "Agregar todo",
+    "deadline": "Fecha limite",
+    "status": "Estado",
+    "sprint": "Sprint",
+    "priority": "Prioridad",
+    "lang": {
+        "en": "Inglés",
+        "es": "Español",
+        "fr": "Francés"
+    },
+    "todo": {
+        "priority": {
+            "high": "Alta",
+            "medium": "media",
+            "low": "Baja"
+        },
+        "range": {
+            "high": "Alta",
+            "medium": "Media",
+            "low": "Baja"
+        }
+    }
+}

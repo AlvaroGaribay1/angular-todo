@@ -2,13 +2,15 @@ import { Attribute, Component, EventEmitter, Input, LOCALE_ID, OnChanges, Output
 import { NTodo } from '../../models/todo.model';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import spanish from '@angular/common/locales/es';
+import { TranslateModule } from '@ngx-translate/core';
 registerLocaleData(spanish);
 
 @Component({
   selector: 'app-todo',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    TranslateModule
   ],
   providers:[
     {

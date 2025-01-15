@@ -1,5 +1,5 @@
-<app-header [counter]="0"></app-header>
-<button (click)="addTodo()">Agregar todo</button>
+<app-header></app-header>
+<button (click)="addTodo()">{{ 'AddTodo' | translate}}</button>
 
 <div style="margin: 2rem;">
     <input type="text" [(ngModel)] = "searchText">

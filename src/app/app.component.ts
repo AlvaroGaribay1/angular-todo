@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { HighlightedDirective } from './directives/highlighted.directive';
 import { interval, Observable } from 'rxjs';
 import { FilterPipe } from './pipes/filter.pipe';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { I18nService } from './services/i18n.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +22,8 @@ import { FilterPipe } from './pipes/filter.pipe';
     HeaderComponent,
     FormsModule,
     HighlightedDirective,
-    FilterPipe
+    FilterPipe,
+    TranslateModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -32,7 +35,7 @@ export class AppComponent implements OnInit, DoCheck {
 
   counter = 0;
 
-  counter$: Observable<number>;
+  // counter$: Observable<number>;
 
   isLoaded = false;
 
@@ -40,10 +43,17 @@ export class AppComponent implements OnInit, DoCheck {
 
   constructor(
     private readonly apiService: ApiService,
-    private readonly cd: ChangeDetectorRef
-
+    private readonly cd: ChangeDetectorRef,
+    private translate: TranslateService,
+    private i18nService: I18nService
   ) {
-    this.counter$ = interval(1000);
+    // // this.counter$ = interval(1000);
+    // translate.setDefaultLang('es');
+
+    // // the lang to use, if the lang isn't available, it will use the current loader to get them
+    // translate.use('es');
+    sessionStorage.setItem('lang', 'es');
+    this.translate.setTranslation('es', this.i18nService.getSpanishData);
   }
   ngDoCheck(): void {
     // if (this.isLoaded) {
@@ -55,6 +65,11 @@ export class AppComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     this.getTodos();
+    this.translate.onLangChange.subscribe(val => {
+      console.log(val);
+      this.getTodos();
+    });
+
   }
 
   private getTodos() {

@@ -12,10 +12,10 @@
         <ng-content></ng-content>
     </section>
     <div>
-        Sprint: {{sprint}}
+        {{'sprint' | translate}}: {{sprint}}
     </div>
     <div class="card-content pills-container">
-        <p>Estado:
+        <p>{{'status' | translate}}:
             <span
                 class="status to-do"
                 [ngClass]="todoData.class.status"
@@ -23,7 +23,7 @@
                 {{todoData.status}}
             </span>
         </p>
-        <p>Prioridad:
+        <p>{{'priority' | translate}}:
             <span
                 class="priority"
                 [ngClass]="todoData.class.priority"
@@ -31,7 +31,7 @@
             {{priority}}
             </span>
         </p>
-        <p>Fecha límite: {{todoData.deadLine | date}}</p>
+        <p>{{'deadline' | translate}}: {{todoData.deadLine | date}}</p>
     </div>
     <section class="progressbar-container">
         <div class="progressbar" [attr.data-progress-range]="range">
